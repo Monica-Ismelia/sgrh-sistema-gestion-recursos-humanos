@@ -1,0 +1,29 @@
+### 📌 Crear un nuevo empleado
+POST http://localhost:3000/empleados
+Content-Type: application/json
+
+{
+  "nombre": "Carlos López",
+  "correo": "carlos.lopez@empresa.com",
+  "telefono": "3204567890",
+  "id_cargo": 1,
+  "id_departamento": 1
+}
+
+### 📋 Obtener todos los empleados
+GET http://localhost:3000/empleados
+
+### 🔍 Obtener un empleado por ID
+GET http://localhost:3000/empleados/1
+
+### ✏️ Actualizar un empleado
+PATCH http://localhost:3000/empleados/1
+Content-Type: application/json
+
+{
+  "telefono": "3109998888"
+}
+
+### ❌ Eliminar un empleado
+DELETE http://localhost:3000/empleados/1
+

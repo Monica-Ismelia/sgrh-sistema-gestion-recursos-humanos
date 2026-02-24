@@ -1,0 +1,16 @@
+---
+
+
+
+### 🏢 Crear un nuevo departamento
+
+POST http://localhost:3000/departamento
+Content-Type: application/json
+
+{
+  "nombre_departamento": "Contabilidad"
+}
+
+
+### 📋 Listar departamentos
+GET http://localhost:3000/departamento

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - SGRH</title>
+  <!-- ✅ Sin espacios extra al final -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-card {
+      max-width: 450px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="card login-card shadow-lg">
+    <div class="card-body p-5">
+      <div class="text-center mb-4">
+        <h1 class="display-4">🏢</h1>
+        <h2 class="mb-2">SGRH</h2>
+        <p class="text-muted">Sistema de Gestión de Recursos Humanos</p>
+      </div>
+      
+      <form id="loginForm">
+        <div class="mb-3">
+          <label for="email" class="form-label">📧 Email</label>
+          <input 
+            type="email" 
+            class="form-control form-control-lg" 
+            id="email" 
+            placeholder="admin@sgrh.com"
+            required
+          >
+        </div>
+        
+        <div class="mb-3">
+          <label for="password" class="form-label">🔒 Contraseña</label>
+          <input 
+            type="password" 
+            class="form-control form-control-lg" 
+            id="password" 
+            placeholder="••••••••"
+            required
+          >
+        </div>
+        
+        <div id="errorMessage" class="alert alert-danger d-none"></div>
+        
+        <button type="submit" class="btn btn-primary btn-lg w-100">
+          🚀 Iniciar Sesión
+        </button>
+
+        <!-- ✅ Link de registro DENTRO del formulario (mejor visualmente) -->
+        <div class="text-center mt-3">
+          <p class="mb-0">¿No tienes cuenta? 
+            <a href="registro.html" class="text-decoration-none">Registrarse</a>
+          </p>
+        </div>
+      </form>
+      
+      <div class="mt-4 p-3 bg-light rounded">
+        <small class="text-muted">
+          <strong>Credenciales de prueba:</strong><br>
+          👤 Admin: admin@sgrh.com / admin123<br>
+          👤 Usuario: usuario@empresa.com / usuario123
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+/* ============================================ */
+/* ESTILOS GENERALES
+/* ============================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* ============================================ */
+/* LOGIN
+/* ============================================ */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.login-card {
+  max-width: 450px;
+  width: 100%;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================ */
+/* NAVBAR
+/* ============================================ */
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+/* ============================================ */
+/* TARJETAS DE MÓDULOS
+/* ============================================ */
+.module-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.module-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+}
+
+.module-card .display-4 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+/* ============================================ */
+/* TABLAS
+/* ============================================ */
+.table {
+  font-size: 0.9rem;
+}
+
+.table thead {
+  font-weight: 600;
+}
+
+.table-responsive {
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+/* ============================================ */
+/* BOTONES
+/* ============================================ */
+.btn {
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+.btn-warning {
+  background-color: #ffc107;
+  border: none;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border: none;
+}
+
+/* ============================================ */
+/* MODALES
+/* ============================================ */
+.modal-header {
+  border-bottom: none;
+}
+
+.modal-footer {
+  border-top: none;
+}
+
+/* ============================================ */
+/* PANEL DE ADMIN
+/* ============================================ */
+.alert-warning {
+  border-left: 5px solid #ffc107;
+}
+
+/* ============================================ */
+/* BUSCADOR
+/* ============================================ */
+#buscador {
+  border-radius: 20px;
+  padding-left: 40px;
+  background-image: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"%3E%3Cpath d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/%3E%3C/svg%3E');
+  background-repeat: no-repeat;
+  background-position: 15px center;
+  background-size: 16px;
+}
+
+/* ============================================ */
+/* RESPONSIVE
+/* ============================================ */
+@media (max-width: 768px) {
+  .module-card {
+    margin-bottom: 20px;
+  }
+  
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+  
+  .table {
+    font-size: 0.8rem;
+  }
+}
+
+/* ============================================ */
+/* UTILIDADES
+/* ============================================ */
+.shadow-sm {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+}
+
+.text-muted {
+  color: #6c757d !important;
+}

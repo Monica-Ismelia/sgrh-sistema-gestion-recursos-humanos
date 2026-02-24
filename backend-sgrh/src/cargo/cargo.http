@@ -1,0 +1,12 @@
+### 📦 Crear un nuevo cargo
+POST http://localhost:3000/cargo
+Content-Type: application/json
+
+{
+  "nombre": "Analista de Sistemas"
+}
+
+### 📋 Listar cargos
+GET http://localhost:3000/cargo
+
+---

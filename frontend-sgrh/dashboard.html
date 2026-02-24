@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - SGRH</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .module-card:hover { transform: translateY(-5px); transition: transform 0.3s; }
+    .navbar-brand { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-dark bg-primary">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1">🏢 SGRH</span>
+      <div class="d-flex align-items-center">
+        <span class="text-white me-3" id="userEmail">Cargando...</span>
+        <span class="badge bg-warning text-dark me-3" id="userRole">-</span>
+        <button onclick="logout()" class="btn btn-danger btn-sm">🚪 Cerrar Sesión</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenido Principal -->
+  <div class="container mt-4">
+    <div class="row mb-4">
+      <div class="col">
+        <h1>📊 Panel de Control</h1>
+        <p class="text-muted">Bienvenido al Sistema de Gestión de Recursos Humanos</p>
+      </div>
+    </div>
+    
+    <!-- Panel Admin -->
+    <div id="adminPanel" class="alert alert-warning d-none mb-4">
+      <h4 class="alert-heading">🔐 Panel de Administrador</h4>
+      <p>Tienes permisos completos para <strong>crear, editar y eliminar</strong> registros.</p>
+    </div>
+
+    <!-- Módulos -->
+    <div class="row g-4 mb-4">
+      <div class="col-md-3">
+        <div class="card module-card h-100 shadow-sm">
+          <div class="card-body text-center">
+            <h1 class="display-4">👥</h1>
+            <h5 class="card-title mt-3">Empleados</h5>
+            <button onclick="loadEmpleados()" class="btn btn-primary">📋 Ver Lista</button>
+            <button id="btnCrearEmpleado" onclick="crearEmpleado()" class="btn btn-success d-none mt-2">➕ Nuevo</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card module-card h-100 shadow-sm">
+          <div class="card-body text-center">
+            <h1 class="display-4">📋</h1>
+            <h5 class="card-title mt-3">Cargos</h5>
+            <button onclick="loadCargos()" class="btn btn-primary">📋 Ver Lista</button>
+            <button id="btnCrearCargo" onclick="crearCargo()" class="btn btn-success d-none mt-2">➕ Nuevo</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card module-card h-100 shadow-sm">
+          <div class="card-body text-center">
+            <h1 class="display-4">🏢</h1>
+            <h5 class="card-title mt-3">Departamentos</h5>
+            <button onclick="loadDepartamentos()" class="btn btn-primary">📋 Ver Lista</button>
+            <button id="btnCrearDepartamento" onclick="crearDepartamento()" class="btn btn-success d-none mt-2">➕ Nuevo</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card module-card h-100 shadow-sm">
+          <div class="card-body text-center">
+            <h1 class="display-4">📄</h1>
+            <h5 class="card-title mt-3">Tipos Documento</h5>
+            <button onclick="loadTiposDocumento()" class="btn btn-primary">📋 Ver Lista</button>
+            <button id="btnCrearTipo" onclick="crearTipo()" class="btn btn-success d-none mt-2">➕ Nuevo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Buscador -->
+    <div class="card shadow-sm mb-3">
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-8">
+            <input 
+              type="text" 
+              id="buscador" 
+              class="form-control" 
+              placeholder="🔍 Buscar por nombre, documento, correo..."
+              onkeyup="buscarEnTabla()"
+            >
+          </div>
+          <div class="col-md-4">
+            <button class="btn btn-primary w-100" onclick="buscarEnTabla()">🔍 Buscar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla de Datos -->
+    <div class="card shadow-sm">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0" id="tablaTitulo">📊 Datos</h5>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover" id="dataTable">
+            <thead class="table-primary"></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- MODAL EMPLEADOS -->
+  <!-- ============================================ -->
+  <div class="modal fade" id="modalEmpleado" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="modalEmpleadoTitulo">➕ Nuevo Empleado</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formEmpleado">
+            <input type="hidden" id="empId">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Nombres</label>
+                <input type="text" class="form-control" id="empNombres" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Apellidos</label>
+                <input type="text" class="form-control" id="empApellidos" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Número Documento</label>
+                <input type="text" class="form-control" id="empNumeroDocumento" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">ID Tipo Documento</label>
+                <input type="number" class="form-control" id="empIdTipoDocumento" value="1" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Fecha Nacimiento</label>
+                <input type="date" class="form-control" id="empFechaNacimiento" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Dirección</label>
+                <input type="text" class="form-control" id="empDireccion" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Teléfono</label>
+                <input type="text" class="form-control" id="empTelefono" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Correo</label>
+                <input type="email" class="form-control" id="empCorreo" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Estado Civil</label>
+                <select class="form-select" id="empEstadoCivil">
+                  <option value="Soltero">Soltero</option>
+                  <option value="Casado">Casado</option>
+                  <option value="Union Libre">Unión Libre</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Fecha Ingreso</label>
+                <input type="date" class="form-control" id="empFechaIngreso" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">ID Cargo</label>
+                <input type="number" class="form-control" id="empIdCargo" value="1" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">ID Departamento</label>
+                <input type="number" class="form-control" id="empIdDepartamento" value="1" required>
+              </div>
+            </div>
+            <div id="mensajeErrorEmpleado" class="alert alert-danger mt-3 d-none"></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" onclick="guardarEmpleado()">💾 Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- MODAL CARGOS -->
+  <!-- ============================================ -->
+  <div class="modal fade" id="modalCargo" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="modalCargoTitulo">➕ Nuevo Cargo</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formCargo">
+            <input type="hidden" id="cargoId">
+            <div class="mb-3">
+              <label class="form-label">Nombre del Cargo</label>
+              <input type="text" class="form-control" id="cargoNombre" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Descripción</label>
+              <textarea class="form-control" id="cargoDescripcion" rows="3"></textarea>
+            </div>
+            <div id="mensajeErrorCargo" class="alert alert-danger d-none"></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" onclick="guardarCargo()">💾 Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- MODAL DEPARTAMENTOS -->
+  <!-- ============================================ -->
+  <div class="modal fade" id="modalDepartamento" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="modalDepartamentoTitulo">➕ Nuevo Departamento</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formDepartamento">
+            <input type="hidden" id="deptId">
+            <div class="mb-3">
+              <label class="form-label">Nombre del Departamento</label>
+              <input type="text" class="form-control" id="deptNombre" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Descripción</label>
+              <textarea class="form-control" id="deptDescripcion" rows="3"></textarea>
+            </div>
+            <div id="mensajeErrorDepartamento" class="alert alert-danger d-none"></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" onclick="guardarDepartamento()">💾 Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- MODAL TIPOS DOCUMENTO -->
+  <!-- ============================================ -->
+  <div class="modal fade" id="modalTipoDocumento" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="modalTipoTitulo">➕ Nuevo Tipo Documento</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formTipoDocumento">
+            <input type="hidden" id="tipoId">
+            <div class="mb-3">
+              <label class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="tipoNombre" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Descripción</label>
+              <textarea class="form-control" id="tipoDescripcion" rows="3"></textarea>
+            </div>
+            <div id="mensajeErrorTipo" class="alert alert-danger d-none"></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" onclick="guardarTipo()">💾 Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/auth.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
