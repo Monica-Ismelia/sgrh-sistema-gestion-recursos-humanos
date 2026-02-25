@@ -1,8 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger'; // Importa  ejemplo  para que los usuarios sepan el formato esperado
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator'; // Importa los validadores necesarios
 import { User } from 'src/users/entities/user.entity';
-
+/**
+ * Data Transfer Object (DTO) for user registration.
+ * Defines validation rules for name, email, password, when creating a new user.
+ */
 export class RegisterDto { // Define la clase RegisterDto
+  /**
+   * The name of user 
+   */
   @ApiProperty({
     name: 'name',
     required: true,
