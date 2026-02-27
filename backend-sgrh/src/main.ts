@@ -46,8 +46,8 @@ async function bootstrap() {
   // Habilitar CORS (opcional, útil si hay frontend separado)
   app.enableCors();
 
-  await app.listen(3000);
-  console.log(`🚀 Servidor ejecutándose en: http://localhost:3000`);
-  console.log(`📘 Documentación Swagger en: http://localhost:3000/api`);
+  const port = process.env.PORT || 3000;
+await app.listen(port);
+  console.log(`🚀 Servidor ejecutándose en: http://localhost:${port}`);
 }
 bootstrap();
