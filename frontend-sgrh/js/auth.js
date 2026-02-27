@@ -17,7 +17,7 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
   console.log('🔐 Intentando login con:', email);
   
   try {
-    const API_URL = 'http://localhost:3000';
+   const API_URL = 'https://sgrh-sistema-gestion-recursos-humanos.onrender.com';
     const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       headers: { 
