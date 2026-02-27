@@ -1,7 +1,7 @@
 // ============================================
 // CONFIGURACIÓN DE LA API
 // ============================================
-const API_URL = 'http://localhost:3000';
+const API_URL = 'https://sgrh-sistema-gestion-recursos-humanos.onrender.com';
 
 // ============================================
 // ============================================
