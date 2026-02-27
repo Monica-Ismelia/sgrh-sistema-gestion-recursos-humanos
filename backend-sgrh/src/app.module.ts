@@ -20,18 +20,19 @@ import { User } from './users/entities/user.entity';
 
 @Module({
   imports: [
-    // Configuración de TypeORM
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',           // tu usuario de MySQL
-      password: 'Micr1981+', // tu contraseña de MySQL
-      database: 'grh',            // nombre de la base de datos
-      entities: [Empleado, Cargo, Departamento, TipoDocumento, User],// registramos las entidades
-      synchronize: true,          // solo para desarrollo: crea/actualiza tablas automáticamente
-    }),
-    
+   TypeOrmModule.forRoot({
+  type: 'mysql',
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT),
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  entities: [Empleado, Cargo, Departamento, TipoDocumento, User],
+  synchronize: true,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+}),
     // Módulos de recursos
     EmpleadoModule,
     CargoModule,
