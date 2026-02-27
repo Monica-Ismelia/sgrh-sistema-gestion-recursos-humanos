@@ -2,29 +2,31 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { User } from './users/entities/user.entity';
+import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  
-  // ✅ Habilita validaciones automáticas
-    app.useGlobalPipes(
+  // ✅ Validaciones globales
+  app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, // elimina propiedades que no estén en el DTO
+      whitelist: true,
       forbidNonWhitelisted: true,
-      transform: true, // convierte automáticamente tipos primitivos
+      transform: true,
     }),
   );
 
-  // 🧩 Configuración de Swagger
+  // 🧩 Swagger
   const config = new DocumentBuilder()
     .setTitle('Sistema de Gestión de Recursos Humanos (SGRH)')
     .setDescription('API del sistema para la gestión de empleados, cargos y departamentos.')
     .setVersion('1.0')
     .addTag('Empleados')
-     .addTag('Departamento')
+    .addTag('Departamento')
     .addTag('Cargos')
-    // ✅ AGREGAR ESTO: Configuración para botón Authorize (JWT Bearer)
     .addBearerAuth(
       {
         type: 'http',
@@ -36,18 +38,44 @@ async function bootstrap() {
       },
       'JWT-auth',
     )
-     .build();
-
-     
+    .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document); // 👉 http://localhost:3000/api
+  SwaggerModule.setup('api', app, document);
 
-  // Habilitar CORS (opcional, útil si hay frontend separado)
   app.enableCors();
 
   const port = process.env.PORT || 3000;
-await app.listen(port);
+  await app.listen(port, '0.0.0.0');
+
   console.log(`🚀 Servidor ejecutándose en: http://localhost:${port}`);
+
+  // 👑 SEEDER ADMIN
+  const userRepository = app.get<Repository<User>>(getRepositoryToken(User));
+
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const adminPassword = process.env.ADMIN_PASSWORD;
+
+  if (adminEmail && adminPassword) {
+    const adminExists = await userRepository.findOne({
+      where: { role: 'admin' },
+    });
+
+    if (!adminExists) {
+      const hashedPassword = await bcrypt.hash(adminPassword, 10);
+
+      const admin = userRepository.create({
+        email: adminEmail,
+        password: hashedPassword,
+        role: 'admin',
+      });
+
+      await userRepository.save(admin);
+      console.log('👑 Admin creado automáticamente');
+    } else {
+      console.log('✅ Admin ya existe');
+    }
+  }
 }
+
 bootstrap();
